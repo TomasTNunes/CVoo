@@ -46,7 +46,7 @@ n_da=nda+Ixz/Iz*lda;
 n_dr=ndr+Ixz/Iz*ldr;
 
 % Lateral Dinamic Equation
-A=[ybb  yp+w0 yr-u0 g*ctt0;
+A=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
    l_bb l_p   l_r   0;
    n_bb n_p   n_r   0;
    0    1     ttt0  0];
@@ -57,10 +57,27 @@ B=[0    ydr;
    0    0];
 
 damp(A);
+[wn,zeta,p]=damp(A);
 
-C=[1 0 0 0];
-%C=[1 0 0 0;0 1 0 0];
-D=[0 0; 0 0];
+% Roll
+T_R = 1/abs(real(p(1)));
+
+% Dutch Roll
+zetawn_DR = zeta(2)*wn(2);
+
+% Spirall
+t2_S = log(2)/abs(p(4));
+
+
+% C=[1 0 0 0;
+%    0 1 0 0;
+%    0 0 1 0;
+%    0 0 0 1];
+% D = [0 0;
+%      0 0;
+%      0 0;
+%      0 0];
+
 % figure(1)
 % bode(ss(A,B(:,1),C,D))
 % figure(2)
@@ -68,7 +85,7 @@ D=[0 0; 0 0];
 %bode(ss(A,B,C,D))
 % sys = ss(A,B,C,D)
 % sys_as_tf = tf(sys)
-
+% step(ss(A,B(:,1),C,D(:,1)),100)
 
 
 
