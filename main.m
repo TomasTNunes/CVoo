@@ -65,18 +65,20 @@ T_R = 1/abs(real(p(1)));
 % Dutch Roll
 zetawn_DR = zeta(2)*wn(2);
 
-% Spirall
+% Spiral
 t2_S = log(2)/abs(p(4));
 
 
-% C=[1 0 0 0;
-%    0 1 0 0;
-%    0 0 1 0;
-%    0 0 0 1];
-% D = [0 0;
-%      0 0;
-%      0 0;
-%      0 0];
+C=[1 0 0 0;
+   0 1 0 0;
+   0 0 1 0;
+   0 0 0 1];
+D = [0 0;
+     0 0;
+     0 0;
+     0 0];
+
+sys = ss(A,B,C,D)
 
 % figure(1)
 % bode(ss(A,B(:,1),C,D))
@@ -86,6 +88,7 @@ t2_S = log(2)/abs(p(4));
 % sys = ss(A,B,C,D)
 % sys_as_tf = tf(sys)
 % step(ss(A,B(:,1),C,D(:,1)),100)
+tf(ss(A,B,C,D))
 
 
 
