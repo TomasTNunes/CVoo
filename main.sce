@@ -83,4 +83,4 @@ t2_S = log(2)/abs(p(1));
 T_S = 1/abs(real(p(1)));
 
 // Transfer functions
-tf(sys)
+ss2tf(sys)
