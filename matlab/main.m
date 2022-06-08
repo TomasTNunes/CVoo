@@ -46,7 +46,7 @@ n_da=nda+Ixz/Iz*lda;
 n_dr=ndr+Ixz/Iz*ldr;
 
 % Lateral Dinamic Equation
-A=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
+A_AA=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
    l_bb l_p   l_r   0;
    n_bb n_p   n_r   0;
    0    1     ttt0  0];
@@ -56,30 +56,82 @@ B=[0    ydr;
    n_da n_dr;
    0    0];
 
-damp(A);
-[wn,zeta,p]=damp(A);
+damp(A_AA);
+[wn_AA,zeta_AA,p_AA]=damp(A_AA);
 
 % Roll
-T_R = 1/abs(real(p(1)));
+T_R = 1/abs(real(p_AA(1)));
 
 % Dutch Roll
-zetawn_DR = zeta(2)*wn(2);
+zetawn_DR = zeta_AA(2)*wn_AA(2);
 
 % Spiral
-t2_S = log(2)/abs(p(4));
+t2_S = log(2)/abs(p_AA(4));
 
 % Exit Equation
-C=[1 0 0 0;
-   0 1 0 0;
-   0 0 1 0;
-   0 0 0 1];
-D = [0 0;
-     0 0;
-     0 0;
-     0 0];
+C = eye(4);
+D = zeros(4,2);
 
 % State-space model
-sys = ss(A,B,C,D)
+sys = ss(A_AA,B,C,D);
 
 % Tranfer functions
-tf(sys)
+% tf(sys);
+% [n_AA_da,d_AA_da] = ss2tf(A_AA,B,C,D,1);
+% [n_AA_dr,d_AA_dr] = ss2tf(A_AA,B,C,D,2);
+% figure()
+% rlocus(-tf(n_AA_dr(3,:),d_AA_dr))
+% sgrid
+
+% ---------------Solução 1------------------
+
+% figure()
+% rlocus(A_AA,B(:,2),-[0 0 1 0],0)
+% sgrid
+% kr_dr = 84.1;
+% A_R1 = A_AA + B(:,2)*[0 0 kr_dr 0];
+% damp(A_R1)
+% 
+% figure()
+% rlocus(A_R1,B(:,2),[0 1 0 0],-0)
+% sgrid
+% kp_dr = 77;
+% A_R2 = A_R1 - B(:,2)*[0 kp_dr 0 0];
+% damp(A_R2)
+% 
+% figure()
+% rlocus(A_R2,B(:,1),-[0 1 0 0],-0)
+% sgrid
+% kp_da = 1.09;
+% A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
+% damp(A_R3)
+% 
+% figure()
+% rlocus(A_R3,B(:,2),[1 0 0 0],-0)
+% sgrid
+% kbb_dr = 27.8;
+% A_R4 = A_R3 - B(:,2)*[kbb_dr 0 0 0];
+% damp(A_R4)
+
+
+% ---------------Solução 2(Esta é melhor)------------------
+figure()
+rlocus(A_AA,B(:,2),-[0 0 1 0],0)
+sgrid
+kr_dr = 115;
+A_R1 = A_AA + B(:,2)*[0 0 kr_dr 0];
+damp(A_R1)
+
+figure()
+rlocus(A_R1,B(:,2),[1 0 0 0],-0)
+sgrid
+kbb_dr = 39;
+A_R2 = A_R1 - B(:,2)*[kbb_dr 0 0 0];
+damp(A_R2)
+
+figure()
+rlocus(A_R2,B(:,1),-[0 1 0 0],-0)
+sgrid
+kp_da = 1;
+A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
+damp(A_R3)
