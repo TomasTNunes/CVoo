@@ -45,7 +45,7 @@ n_r=nr+Ixz/Iz*lr;
 n_da=nda+Ixz/Iz*lda;
 n_dr=ndr+Ixz/Iz*ldr;
 
-% Lateral Dinamic Equation
+% Lateral Dynamic Equation
 A_AA=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
       l_bb l_p   l_r   0;
       n_bb n_p   n_r   0;
@@ -67,13 +67,3 @@ zetawn_DR = zeta_AA(2)*wn_AA(2);
 
 % Spiral
 t2_S = log(2)/abs(p_AA(4));
-
-% Exit Equation
-C = eye(4);
-D = zeros(4,2);
-
-% State-space model
-sys = ss(A_AA,B,C,D);
-
-% Tranfer functions
-tf(sys);

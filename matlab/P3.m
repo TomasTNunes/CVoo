@@ -45,7 +45,7 @@ n_r=nr+Ixz/Iz*lr;
 n_da=nda+Ixz/Iz*lda;
 n_dr=ndr+Ixz/Iz*ldr;
 
-% Lateral Dinamic Equation
+% Lateral Dynamic Equation
 A_AA=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
       l_bb l_p   l_r   0;
       n_bb n_p   n_r   0;
@@ -61,7 +61,7 @@ B=[0    ydr;
 C = eye(4);
 D = zeros(4,2);
 
-% Integrative States for beta and phi
+% Add Integrative States for beta and phi in Dynamic Equation
 A2_AA = [A_AA zeros(4,2);
     1 0 0 0 0 0;
     0 0 0 1 0 0];
@@ -82,14 +82,9 @@ iphi_B = 0.3  * phi_B;
 dda_B  = 10 * deg;     
 ddr_B  = 20 * deg;
 
-% Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2]);
-% R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2 1/(ibb_B)^2 1/(iphi_B)^2]);
 R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
-% K_lqr = lqr(A_AA,B,Q,R); 
-% A_f = A_AA - B*K_lqr;
-% damp(A_f)
 K_lqr = lqr(A2_AA,B2,Q,R); 
 A2_f = A2_AA - B2*K_lqr;
 damp(A2_f)
