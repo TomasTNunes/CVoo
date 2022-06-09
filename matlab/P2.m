@@ -47,9 +47,9 @@ n_dr=ndr+Ixz/Iz*ldr;
 
 % Lateral Dinamic Equation
 A_AA=[ybb  yp+w0/u0 yr-1 g*ctt0/u0;
-   l_bb l_p   l_r   0;
-   n_bb n_p   n_r   0;
-   0    1     ttt0  0];
+      l_bb l_p   l_r   0;
+      n_bb n_p   n_r   0;
+      0    1     ttt0  0];
 
 B=[0    ydr;
    l_da l_dr;
