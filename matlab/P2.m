@@ -63,26 +63,45 @@ C = eye(4);
 D = zeros(4,2);
 
 % LGR
+% LGR - r/dr
 figure()
 rlocus(A_AA,B(:,2),-[0 0 1 0],0)
 sgrid
-kr_dr = 115;
+hold on
+kr_dr = 115;  % gain
+% plot new poles
+p_R1 = rlocus(A_AA,B(:,2),-[0 0 1 0],0,kr_dr);
+plot(p_R1,'+k','LineWidth',1.2)
+% new dynamic matrix
 A_R1 = A_AA + B(:,2)*[0 0 kr_dr 0];
 damp(A_R1)
 
+% LGR - bb/dr
 figure()
 rlocus(A_R1,B(:,2),[1 0 0 0],-0)
 sgrid
-kbb_dr = 39;
+hold on
+kbb_dr = 39;  % gain
+% plot new poles
+p_R2 = rlocus(A_R1,B(:,2),[1 0 0 0],-0,kbb_dr);
+plot(p_R2,'+k','LineWidth',1.2)
+% new dynamic matrix
 A_R2 = A_R1 - B(:,2)*[kbb_dr 0 0 0];
 damp(A_R2)
 
+% LGR - p/da
 figure()
 rlocus(A_R2,B(:,1),-[0 1 0 0],-0)
 sgrid
-kp_da = 1;
+hold on
+kp_da = 1;  % gain 
+% plot new poles
+p_R3 = rlocus(A_R2,B(:,1),-[0 1 0 0],-0,kp_da);
+plot(p_R3,'+k','LineWidth',1.2)
+% new dynamic matrix
 A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
 damp(A_R3)
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
