@@ -69,26 +69,37 @@ B2 = [B;
     0 0;
     0 0];
 
-% Bryson Method
+% Bryson Method - Initial
+% bb_B   = 2.5 * deg;
+% p_B    = 1 * deg;              
+% r_B    = 1 * deg; %1             
+% phi_B  = 10 * deg;
+% ibb_B  = 0.3 * bb_B;
+% iphi_B = 0.3  * phi_B;
+% dda_B  = 10 * deg;     
+% ddr_B  = 10 * deg;
+
+% Bryson Method - Final
 bb_B   = 0.5 * deg;
-p_B    = 0.4 * deg;              
+p_B    = 0.4 * deg;  % escolher entre p=1(<sT,>S) ou p=0.4(>sT,<S)            
 r_B    = 0.18 * deg;              
 phi_B  = 0.7 * deg;
 ibb_B  = 0.3 * bb_B;
 iphi_B = 0.3  * phi_B;
-% dimunuir r_B aumenta amortecimento e dimunui fn de RH quase nao afeta R,E
-% aumentar ddr_B aumenta amortecimento e fn de RH quase nao afeta R,E
-
 dda_B  = 10 * deg;     
 ddr_B  = 20 * deg;
 
+% Cost Matrix with Bryson Method
 Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2 1/(ibb_B)^2 1/(iphi_B)^2]);
 R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
-K_lqr = lqr(A2_AA,B2,Q,R); 
+% LQR
+K_lqr = lqr(A2_AA,B2,Q,R);  % gain matrix
+% Closed Loop Dynamic Matrix (6 state Matrix)
 A2_f = A2_AA - B2*K_lqr;
 damp(A2_f)
 
+% Separate gain in interior, exterior and integrator loop
 K_pr = K_lqr(:,2:3);
 K_bbphi = [K_lqr(:,1) K_lqr(:,4)];
 K_int = K_lqr(:,5:6);

@@ -102,33 +102,3 @@ plot(p_R3,'+k','LineWidth',1.2)
 A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
 damp(A_R3)
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% figure()
-% rlocus(A_AA,B(:,2),-[0 0 1 0],0)
-% sgrid
-% kr_dr = 84.1;
-% A_R1 = A_AA + B(:,2)*[0 0 kr_dr 0];
-% damp(A_R1)
-% 
-% figure()
-% rlocus(A_R1,B(:,2),[0 1 0 0],-0)
-% sgrid
-% kp_dr = 77;
-% A_R2 = A_R1 - B(:,2)*[0 kp_dr 0 0];
-% damp(A_R2)
-% 
-% figure()
-% rlocus(A_R2,B(:,1),-[0 1 0 0],-0)
-% sgrid
-% kp_da = 1.09;
-% A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
-% damp(A_R3)
-% 
-% figure()
-% rlocus(A_R3,B(:,2),[1 0 0 0],-0)
-% sgrid
-% kbb_dr = 27.8;
-% A_R4 = A_R3 - B(:,2)*[kbb_dr 0 0 0];
-% damp(A_R4)
