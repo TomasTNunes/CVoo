@@ -78,7 +78,7 @@ damp(A_R1)
 
 % LGR - bb/dr
 figure()
-rlocus(A_R1,B(:,2),[1 0 0 0],-0)
+rlocus(A_R1,B(:,2),[1 0 0 0],0)
 sgrid
 hold on
 kbb_dr = 39;  % gain
@@ -101,4 +101,3 @@ plot(p_R3,'+k','LineWidth',1.2)
 % new dynamic matrix
 A_R3 = A_R2 + B(:,1)*[0 kp_da 0 0];
 damp(A_R3)
-

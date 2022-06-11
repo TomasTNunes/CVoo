@@ -70,10 +70,10 @@ B2 = [B;
     0 0];
 
 % Bryson Method - Initial
-% bb_B   = 2.5 * deg;
+% bb_B   = 3 * deg;
 % p_B    = 1 * deg;              
 % r_B    = 1 * deg; %1             
-% phi_B  = 10 * deg;
+% phi_B  = 9 * deg;
 % ibb_B  = 0.3 * bb_B;
 % iphi_B = 0.3  * phi_B;
 % dda_B  = 10 * deg;     
@@ -81,7 +81,7 @@ B2 = [B;
 
 % Bryson Method - Final
 bb_B   = 0.5 * deg;
-p_B    = 0.4 * deg;  % escolher entre p=1(<sT,>S) ou p=0.4(>sT,<S)            
+p_B    = 1 * deg;  % 0.4            
 r_B    = 0.18 * deg;              
 phi_B  = 0.7 * deg;
 ibb_B  = 0.3 * bb_B;
@@ -103,3 +103,39 @@ damp(A2_f)
 K_pr = K_lqr(:,2:3);
 K_bbphi = [K_lqr(:,1) K_lqr(:,4)];
 K_int = K_lqr(:,5:6);
+
+% Run simulink
+T_final = 60; %s
+bb_stept = 10; %s
+bb_ref = 5; %deg
+phi_stept = 30; %s
+phi_ref = 10; %deg
+out = sim('P3_controlo_atitude',T_final);
+
+figure()
+plot(out.beta_ref.time,out.beta_ref.data,'b','Linewidth',1.2)
+hold on
+plot(out.beta.time,out.beta.data,'r','Linewidth',1.2)
+legend('\beta ref','\beta','Location','NorthEast')
+grid on
+xlabel('time [s]')
+ylabel('Deg')
+
+figure()
+plot(out.phi_ref.time,out.phi_ref.data,'b','Linewidth',1.2)
+hold on
+plot(out.phi.time,out.phi.data,'r','Linewidth',1.2)
+legend('\phi ref','\phi','Location','NorthEast')
+grid on
+xlabel('time [s]')
+ylabel('Deg')
+
+figure()
+plot(out.da.time,out.da.data,'c','Linewidth',1.2)
+hold on
+plot(out.dr.time,out.dr.data,'g','Linewidth',1.2)
+legend('\delta_a','\delta_r','Location','NorthEast')
+grid on
+xlabel('time [s]')
+ylabel('Deg')
+
