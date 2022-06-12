@@ -131,14 +131,3 @@ legend('\phi_{ref}','\phi','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
-
-% Plots delta_a & delta_r
-figure()
-plot(out.da.time,out.da.data,'c','Linewidth',1.2)
-hold on
-plot(out.dr.time,out.dr.data,'g','Linewidth',1.2)
-legend('\delta_a','\delta_r','Location','NorthEast')
-grid on
-xlabel('time [s]')
-ylabel('Deg')
-
