@@ -105,18 +105,18 @@ K_bbphi = [K_lqr(:,1) K_lqr(:,4)];
 K_int = K_lqr(:,5:6);
 
 % Run simulink
-T_final = 60; %s
+T_final = 90; %s
 bb_stept = 10; %s
-bb_ref = 5; %deg
-phi_stept = 30; %s
-phi_ref = 10; %deg
+bb_ref = 3; %deg
+phi_stept = 50; %s
+phi_ref = 8; %deg
 out = sim('P3_controlo_atitude',T_final);
 
 figure()
 plot(out.beta_ref.time,out.beta_ref.data,'b','Linewidth',1.2)
 hold on
 plot(out.beta.time,out.beta.data,'r','Linewidth',1.2)
-legend('\beta ref','\beta','Location','NorthEast')
+legend('\beta_{ref}','\beta','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
@@ -125,7 +125,7 @@ figure()
 plot(out.phi_ref.time,out.phi_ref.data,'b','Linewidth',1.2)
 hold on
 plot(out.phi.time,out.phi.data,'r','Linewidth',1.2)
-legend('\phi ref','\phi','Location','NorthEast')
+legend('\phi_{ref}','\phi','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
