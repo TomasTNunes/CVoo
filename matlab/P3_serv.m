@@ -61,6 +61,13 @@ B=[0    ydr;
 C = eye(4);
 D = zeros(4,2);
 
+% Add Integrative States for beta and phi in Dynamic Equation
+A2_AA = [A_AA zeros(4,2);
+    1 0 0 0 0 0;
+    0 0 0 1 0 0];
+B2 = [B;
+    0 0;
+    0 0];
 
 % Bryson Method - Initial
 % bb_B   = 3 * deg;
@@ -73,35 +80,46 @@ D = zeros(4,2);
 % ddr_B  = 10 * deg;
 
 % Bryson Method - Final
-bb_B   = 0.2 * deg;
+bb_B   = 0.5 * deg;
 p_B    = 1 * deg;  % 0.4            
-r_B    = 0.5 * deg;              
+r_B    = 0.18 * deg;              
 phi_B  = 0.7 * deg;
-dda_B  = 2 * deg;     
+ibb_B  = 0.3 * bb_B;
+iphi_B = 0.3  * phi_B;
+dda_B  = 10 * deg;     
 ddr_B  = 20 * deg;
 
+% bb_B   = 0.17 * deg;
+% p_B    = 1 * deg;  % 0.4            
+% r_B    = 0.3 * deg;              
+% phi_B  = 1 * deg;
+% ibb_B  = 1 * bb_B;
+% iphi_B = 0.6 * phi_B;
+% dda_B  = 5 * deg;     
+% ddr_B  = 10 * deg;
+
 % Cost Matrix with Bryson Method
-Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2]);
+Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2 1/(ibb_B)^2 1/(iphi_B)^2]);
 R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
 % LQR
-K_lqr = lqr(A_AA,B,Q,R);  % gain matrix
+K_lqr = lqr(A2_AA,B2,Q,R);  % gain matrix
 % Closed Loop Dynamic Matrix (6 state Matrix)
-A_f = A_AA - B*K_lqr;
-damp(A_f)
+A2_f = A2_AA - B2*K_lqr;
+damp(A2_f)
 
-CC = [1 0 0 0; 0 0 0 1];
-dcgain = dcgain(A_f,B,C,D);
-F = (CC*dcgain)^(-1);
-
+% Separate gain in interior, exterior and integrator loop
+K_pr = K_lqr(:,2:3);
+K_bbphi = [K_lqr(:,1) K_lqr(:,4)];
+K_int = K_lqr(:,5:6);
 
 % Run simulink
 T_final = 90; %s
 bb_stept = 10; %s
-bb_ref = 3; %deg
+bb_ref = 0.8; %deg
 phi_stept = 50; %s
 phi_ref = 8; %deg
-out = sim('P3_test_sim',T_final);
+out = sim('P3_serv_sim',T_final);
 
 % Plots beta & beta_ref
 figure()
@@ -132,3 +150,4 @@ legend('\delta_a','\delta_r','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
+
