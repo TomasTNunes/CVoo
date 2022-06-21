@@ -61,6 +61,15 @@ B=[0    ydr;
 C = eye(4);
 D = zeros(4,2);
 
+
+% Bryson Method - Initial
+% bb_B   = 3 * deg;
+% p_B    = 1 * deg;              
+% r_B    = 1 * deg; %1             
+% phi_B  = 9 * deg;
+% dda_B  = 10 * deg;     
+% ddr_B  = 10 * deg;
+
 % Bryson Method - Final
 bb_B   = 0.18;
 p_B    = 1;  % 0.5 - experimentar esta com atuadores          
@@ -94,29 +103,12 @@ K_psi = 2.49;
 
 % LOS - characteristics
 % LOS - characteristics
-global rumoactual Rmin distmin pontos;
-rumoactual = 1;
-Rmin = 850; % m
-distmin = 1400; % m
-pontos=         [0         1.0000
-                 2.0000    3.0000
-                 2.0000    8.0000
-                 4.0000    8.0000
-                 4.0000    3.0000
-                 6.0000    3.0000
-                 6.0000    8.0000
-                 8.0000    8.0000
-                 8.0000    3.0000
-                 2.3529   -1.7647
-                -0.2353   -1.7647
-                 0         1.0588] .* Rmin; % m
-
 
 % Run simulink
-T_final = 500; %s
+T_final = 100; %s
 bb_stept = 10; %s
 bb_ref = 0; %deg
-out = sim('P5_F_sim',T_final);
+out = sim('auxx',T_final);
 
 % Plots beta & beta_ref
 figure()
@@ -170,10 +162,6 @@ ylabel('Deg')
 
 % 
 figure()
-plot(pontos(:,1),pontos(:,2),'*r')
-hold on
 plot(out.pos.data(:,1),out.pos.data(:,2),'-b')
 xlabel('East [m]')
 ylabel('North [m]')
-
-

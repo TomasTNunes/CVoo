@@ -61,15 +61,6 @@ B=[0    ydr;
 C = eye(4);
 D = zeros(4,2);
 
-
-% Bryson Method - Initial
-% bb_B   = 3 * deg;
-% p_B    = 1 * deg;              
-% r_B    = 1 * deg; %1             
-% phi_B  = 9 * deg;
-% dda_B  = 10 * deg;     
-% ddr_B  = 10 * deg;
-
 % Bryson Method - Final
 bb_B   = 0.18;
 p_B    = 1;  % 0.5 - experimentar esta com atuadores          
