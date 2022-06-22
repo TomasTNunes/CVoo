@@ -61,15 +61,6 @@ B=[0    ydr;
 C = eye(4);
 D = zeros(4,2);
 
-
-% Bryson Method - Initial
-% bb_B   = 3 * deg;
-% p_B    = 1 * deg;              
-% r_B    = 1 * deg; %1             
-% phi_B  = 9 * deg;
-% dda_B  = 10 * deg;     
-% ddr_B  = 10 * deg;
-
 % Bryson Method - Final
 bb_B   = 0.18;
 p_B    = 1;  % 0.5 - experimentar esta com atuadores          
@@ -88,12 +79,12 @@ K_lqr = lqr(A_AA,B,Q,R);  % gain matrix
 A_f = A_AA - B*K_lqr;
 damp(A_f)
 
-%
-CC = [1 0 0 0; 0 0 0 1];
-dcgain = dcgain(A_f,B,C,D);
-F = (CC*dcgain)^(-1);
+% Compute F matrix
+CC = [1 0 0 0; 0 0 0 1]; % beta and phi
+dcgain = dcgain(A_f,B,C,D); % closed loop gain
+F = (CC*dcgain)^(-1); % F matrix
 
-%
+% Compute K_psi gain
 % G_phi_phiref=tf(ss(A_AA-B*K_lqr,B*F*[0;1],[0 0 0 1],0)); % G = phi/phiref
 % s=tf('s');
 % G_psi_phiref = G_phi_phiref/(s*(u0/g)); % G = psi/phiref
@@ -102,20 +93,42 @@ F = (CC*dcgain)^(-1);
 K_psi = 2.49;
 
 % LOS - characteristics
-% LOS - characteristics
+global actualpath Rmin distmin points;
+actualpath = 1;
+Rmin = 3500; % m
+distmin = 1400; % m 800
+points=         [0         1.0000
+                 1.0000    3.0000
+                 1.0000    5.5000
+                 1.0000    8.0000
+                 3.0000    8.0000
+                 3.0000    5.5000
+                 3.0000    3.0000
+                 5.0000    3.0000
+                 5.0000    5.5000
+                 5.0000    8.0000
+                 7.0000    8.0000
+                 7.0000    5.5000
+                 7.0000    3.0000
+                % 4.2500    0.6000
+                 1.5000   -1.8000
+                 0.8000   -1.8000
+                 0.0000   -1.0000
+                 0         1.0000] .* Rmin; % m
+
 
 % Run simulink
-T_final = 100; %s
+T_final = 1050; %s 1075
 bb_stept = 10; %s
 bb_ref = 0; %deg
-out = sim('auxx',T_final);
+out = sim('P5_F_sim',T_final);
 
 % Plots beta & beta_ref
 figure()
-plot(out.beta_ref.time,out.beta_ref.data,'b','Linewidth',1.2)
-hold on
 plot(out.beta.time,out.beta.data,'r','Linewidth',1.2)
-legend('\beta_{ref}','\beta','Location','NorthEast')
+hold on
+plot(out.beta_ref.time,out.beta_ref.data,'b','Linewidth',1.2)
+legend('\beta','\beta_{ref}','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
@@ -132,9 +145,9 @@ ylabel('Deg')
 
 % Plots delta_a & delta_r
 figure()
-plot(out.da.time,out.da.data,'c','Linewidth',1.2)
+plot(out.da.time,out.da.data,'b','Linewidth',1.2)
 hold on
-plot(out.dr.time,out.dr.data,'g','Linewidth',1.2)
+plot(out.dr.time,out.dr.data,'r','Linewidth',1.2)
 legend('\delta_a','\delta_r','Location','NorthEast')
 grid on
 xlabel('time [s]')
@@ -150,18 +163,24 @@ grid on
 xlabel('time [s]')
 ylabel('Deg/s')
 
-% Plots psi e psi_ref
+% Plots psi & psi_ref
 figure()
-plot(out.psi_ref.time,out.psi_ref.data,'b','Linewidth',1.2)
-hold on
 plot(out.psi.time,out.psi.data,'r','Linewidth',1.2)
-legend('\psi_{ref}','psi','Location','NorthEast')
+hold on
+plot(out.psi_ref.time,out.psi_ref.data,'--b','Linewidth',1.2)
+legend('\psi','\psi_{ref}','Location','NorthEast')
 grid on
 xlabel('time [s]')
 ylabel('Deg')
 
-% 
+% Plots path & path_ref
+path = path_ref();
 figure()
-plot(out.pos.data(:,1),out.pos.data(:,2),'-b')
+plot(points(:,1),points(:,2),'*b')
+hold on
+plot(out.pos.data(:,1),out.pos.data(:,2),'-r','Linewidth',1.2)
+plot(path(1,:),path(2,:),'--b','Linewidth',1.2)
 xlabel('East [m]')
 ylabel('North [m]')
+legend('path_{ref} points','path','path_{ref}','Location','SouthEast')
+

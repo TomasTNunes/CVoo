@@ -1,16 +1,17 @@
-function out=P5_LOS(posicao)
-    global rumoactual Rmin distmin pontos;
+function out=P5_LOS(pos)
+    global actualpath Rmin distmin points;
     
-    rumo = [pontos(rumoactual,1) pontos(rumoactual,2)];
-    dist = sqrt((rumo(1)-posicao(1))^2+(rumo(2)-posicao(2))^2);
+    rumo = [points(actualpath,1) points(actualpath,2)];
+    dist = sqrt((rumo(1)-pos(1))^2+(rumo(2)-pos(2))^2);
 
     if dist <= distmin
-        rumoactual = rumoactual + 1;
-        if rumoactual == 12
+        actualpath = actualpath + 1
+        if actualpath == length(points)
+            actualpath = 1;
         end
-        rumo=[pontos(rumoactual,1) pontos(rumoactual,2)];
+        rumo=[points(actualpath,1) points(actualpath,2)];
     end
-    angulo = atan2((rumo(1) - posicao(1)), (rumo(2) - posicao(2)));
+    angulo = atan2((rumo(1) - pos(1)), (rumo(2) - pos(2)));
      
     %para correção da descontinuidade do atan2
     if(angulo<=0)
