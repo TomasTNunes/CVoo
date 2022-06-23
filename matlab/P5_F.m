@@ -179,6 +179,15 @@ figure()
 plot(points(:,1),points(:,2),'*b')
 hold on
 plot(out.pos.data(:,1),out.pos.data(:,2),'-r','Linewidth',1.2)
+xlabel('East [m]')
+ylabel('North [m]')
+legend('path_{ref} points','path','Location','SouthEast')
+
+path = path_ref();
+figure()
+plot(points(:,1),points(:,2),'*b')
+hold on
+plot(out.pos.data(:,1),out.pos.data(:,2),'-r','Linewidth',1.2)
 plot(path(1,:),path(2,:),'--b','Linewidth',1.2)
 xlabel('East [m]')
 ylabel('North [m]')
