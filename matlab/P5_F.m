@@ -174,7 +174,6 @@ xlabel('time [s]')
 ylabel('Deg')
 
 % Plots path & path_ref
-path = path_ref();
 figure()
 plot(points(:,1),points(:,2),'*b')
 hold on
