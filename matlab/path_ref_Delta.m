@@ -1,5 +1,5 @@
 function path = path_ref_Delta()
-
+% Computes Reference path vectors
 global points Rmin
 pointsE = points(:,1);
 pointsN = points(:,2);

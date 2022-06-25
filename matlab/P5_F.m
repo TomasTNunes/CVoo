@@ -75,7 +75,7 @@ R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
 % LQR
 K_lqr = lqr(A_AA,B,Q,R);  % gain matrix
-% Closed Loop Dynamic Matrix (6 state Matrix)
+% Closed Loop Dynamic Matrix
 A_f = A_AA - B*K_lqr;
 damp(A_f)
 
@@ -173,7 +173,7 @@ grid on
 xlabel('time [s]')
 ylabel('Deg')
 
-% Plots path & path_ref
+% Plots path
 figure()
 plot(points(:,1),points(:,2),'*b')
 hold on
@@ -182,6 +182,7 @@ xlabel('East [m]')
 ylabel('North [m]')
 legend('path_{ref} points','path','Location','SouthEast')
 
+% Plots path & path_ref
 path = path_ref();
 figure()
 plot(points(:,1),points(:,2),'*b')

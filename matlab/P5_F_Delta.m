@@ -75,7 +75,7 @@ R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
 % LQR
 K_lqr = lqr(A_AA,B,Q,R);  % gain matrix
-% Closed Loop Dynamic Matrix (6 state Matrix)
+% Closed Loop Dynamic Matrix
 A_f = A_AA - B*K_lqr;
 damp(A_f)
 

@@ -75,13 +75,14 @@ R = diag([1/(dda_B)^2 1/(ddr_B)^2]);
 
 % LQR
 K_lqr = lqr(A_AA,B,Q,R);  % gain matrix
-% Closed Loop Dynamic Matrix (6 state Matrix)
+% Closed Loop Dynamic Matrix
 A_f = A_AA - B*K_lqr;
 damp(A_f)
 
-CC = [1 0 0 0; 0 0 0 1];
-dcgain = dcgain(A_f,B,C,D);
-F = (CC*dcgain)^(-1);
+% Compute F matrix
+CC = [1 0 0 0; 0 0 0 1]; % beta and phi
+dcgain = dcgain(A_f,B,C,D); % closed loop gain
+F = (CC*dcgain)^(-1); % F matrix
 
 % Run simulink
 T_final = 90; %s

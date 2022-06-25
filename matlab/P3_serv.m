@@ -89,15 +89,6 @@ iphi_B = 0.3  * phi_B;
 dda_B  = 10 * deg;     
 ddr_B  = 20 * deg;
 
-% bb_B   = 0.17 * deg;
-% p_B    = 1 * deg;  % 0.4            
-% r_B    = 0.3 * deg;              
-% phi_B  = 1 * deg;
-% ibb_B  = 1 * bb_B;
-% iphi_B = 0.6 * phi_B;
-% dda_B  = 5 * deg;     
-% ddr_B  = 10 * deg;
-
 % Cost Matrix with Bryson Method
 Q = diag([1/(bb_B)^2  1/(p_B)^2 1/(r_B)^2 1/(phi_B)^2 1/(ibb_B)^2 1/(iphi_B)^2]);
 R = diag([1/(dda_B)^2 1/(ddr_B)^2]);

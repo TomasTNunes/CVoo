@@ -1,7 +1,8 @@
 function out=P5_LOS(pos)
+% Computes psi ref
     global actualpath Rmin distmin points;
     
-    rumo = [points(actualpath,1) points(actualpath,2)];
+    rumo = [points(actualpath,1) points(actualpath,2)]; % LOS point
     dist = sqrt((rumo(1)-pos(1))^2+(rumo(2)-pos(2))^2);
 
     if dist <= distmin
@@ -9,11 +10,12 @@ function out=P5_LOS(pos)
         if actualpath == length(points)
             actualpath = 1;
         end
-        rumo=[points(actualpath,1) points(actualpath,2)];
+        rumo=[points(actualpath,1) points(actualpath,2)]; % LOS point
     end
-    angulo = atan2((rumo(1) - pos(1)), (rumo(2) - pos(2)));
+
+    angulo = atan2((rumo(1) - pos(1)), (rumo(2) - pos(2))); % psi ref
      
-    %para correção da descontinuidade do atan2
+    % Correction of atan2 between 0º and 360º
     if(angulo<=0)
         out = angulo + 2*pi;
     end
