@@ -1,4 +1,4 @@
-function path = path_ref()
+function path = path_ref_Delta()
 
 global points Rmin
 pointsE = points(:,1);
